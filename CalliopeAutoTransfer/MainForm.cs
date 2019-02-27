@@ -59,6 +59,14 @@ namespace CalliopeAutoTransfer
             }
             CalliopeVerbundenLabel.Text = "Calliope verbunden";
             CalliopeVerbundenLabel.BackColor = Color.LightGreen;
+
+            if (!String.IsNullOrEmpty(_transferDatei))
+            {
+
+                PrüfenLabel.Text = $"Datei '{Path.GetFileName(_transferDatei)}' wurde auf Deinen Calliope übertragen!\nDu kannst den Calliope jetzt trennen.";
+                PrüfenLabel.BackColor = Color.LightGreen;
+                _transferDatei = String.Empty;
+            }
         }
 
         private void CalliopeConnectionOnDisconnected()
@@ -70,6 +78,9 @@ namespace CalliopeAutoTransfer
             }
             CalliopeVerbundenLabel.Text = "Calliope nicht verbunden";
             CalliopeVerbundenLabel.BackColor = Color.DarkOrange;
+
+            PrüfenLabel.Text = String.Empty;
+            PrüfenLabel.BackColor = Color.Transparent;
         }
         #endregion
 
@@ -109,6 +120,8 @@ namespace CalliopeAutoTransfer
             ProjectFiles.SelectedItem = Path.GetFileName(file);
             TransferDateiLabel.Text = "Übertragungsdatei:\n" + Path.GetFileName(_transferDatei);
             TransferDateiLabel.BackColor = Color.LightGreen;
+            PrüfenLabel.Text = String.Empty;
+            PrüfenLabel.BackColor = Color.Transparent;
         }
 
         private void FileSystemOnNewFileList(IEnumerable<string> files)
@@ -165,11 +178,12 @@ namespace CalliopeAutoTransfer
 
 
         string _transferDatei = String.Empty;
+
         private void timer_Tick(object sender, EventArgs e)
         {
             try
             {
-                var übertragungsdateiNochVorhanden = !String.IsNullOrEmpty(_transferDatei);
+                var übertragungsdateiNochVorhanden = File.Exists(_transferDatei);
                 if (übertragungsdateiNochVorhanden)
                 {
                     TransferDateiLabel.Text = "Übertragungsdatei:\n" + Path.GetFileName(_transferDatei);
@@ -182,20 +196,13 @@ namespace CalliopeAutoTransfer
                 }
 
                 var angeschlossenUndBereit = _calliopeConnection?.Ready() ?? false;
-                
-
 
                 if (übertragungsdateiNochVorhanden && angeschlossenUndBereit && AutomaticON.Checked)
                 {
                     _calliopeConnection.CopyFrom(_transferDatei);
-                    PrüfenLabel.Text = $"Datei '{Path.GetFileName(_transferDatei)}' wurde auf Deinen Calliope übertragen!";
-                    PrüfenLabel.BackColor = Color.LightGreen;
-                    TopMost = true;
-                    if (WindowState == FormWindowState.Minimized)
-                        WindowState = FormWindowState.Maximized;
-                    Show();
-                    TopMost = false;
-                    _transferDatei = String.Empty;
+                    ShowCopyStart();
+                    
+                    ShowMe();
                 }
             }
             catch (Exception exception)
@@ -203,7 +210,22 @@ namespace CalliopeAutoTransfer
                 PrüfenLabel.Text = exception.Message;
             }
         }
-        
+
+        private void ShowMe()
+        {
+            TopMost = true;
+            if (WindowState == FormWindowState.Minimized)
+                WindowState = FormWindowState.Maximized;
+            Show();
+            TopMost = false;
+        }
+
+        private void ShowCopyStart()
+        {
+            PrüfenLabel.Text =
+                $"Datei '{Path.GetFileName(_transferDatei)}' wird auf Deinen Calliope übertragen!";
+            PrüfenLabel.BackColor = Color.Yellow;
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -214,9 +236,16 @@ namespace CalliopeAutoTransfer
         {
             _fileSystem?.ForExisitingFile(ProjectFiles.SelectedItem?.ToString(), fullName =>
             {
+                if (!_calliopeConnection.Ready())
+                {
+                    PrüfenLabel.Text =
+                        $"Deinen Calliope ist nicht verbunden. Die Datei kann nicht übertragen werden.";
+                    PrüfenLabel.BackColor = Color.OrangeRed;
+                    return;
+                }
+                _transferDatei = fullName;
                 _calliopeConnection?.CopyFrom(fullName);
-                PrüfenLabel.Text = $"Datei '{Path.GetFileName(fullName)}' wurde auf Deinen Calliope übertragen!";
-                PrüfenLabel.BackColor = Color.LightGreen;
+               ShowCopyStart();
             });
         }
     }

@@ -50,9 +50,9 @@ namespace CalliopeAutoTransfer
             var driveInfo = DriveInfo.GetDrives().SingleOrDefault(d => d.Name == Drive);
             return driveInfo?.IsReady ?? false;
         }
-        
 
-        internal void CopyFrom(string file)
+
+        internal void CopyFrom(string file, Action success = null, Action<string> error = null)
         {
             Task.Factory.StartNew(() =>
             {
@@ -61,9 +61,11 @@ namespace CalliopeAutoTransfer
                     File.Copy(
                         file,
                         Path.Combine(Drive, Path.GetFileName(file)));
+                    success?.Invoke();
                 }
-                catch
+                catch(Exception e)
                 {
+                    error?.Invoke(e.Message);
                 }
             });
         }
