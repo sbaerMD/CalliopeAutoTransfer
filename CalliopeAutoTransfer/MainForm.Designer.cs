@@ -35,7 +35,6 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.PrüfenLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.AutomaticON = new System.Windows.Forms.CheckBox();
             this.CalliopeVerbundenLabel = new System.Windows.Forms.Panel();
             this.CalliopeVerbundenLabel_ = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -57,6 +56,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.filesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.AutomaticON = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.CalliopeVerbundenLabel.SuspendLayout();
@@ -80,9 +81,9 @@
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.White;
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -91,7 +92,7 @@
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(971, 853);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -101,9 +102,9 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Britannic Bold", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label1.Location = new System.Drawing.Point(197, 0);
+            this.label1.Location = new System.Drawing.Point(28, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(576, 150);
+            this.label1.Size = new System.Drawing.Size(915, 150);
             this.label1.TabIndex = 0;
             this.label1.Text = "Calliope Auto Transfer";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -114,33 +115,31 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.Controls.Add(this.PrüfenLabel, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.AutomaticON, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.CalliopeVerbundenLabel, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.transferPanel, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.filesPanel, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.PrüfenLabel, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.CalliopeVerbundenLabel, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.transferPanel, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.filesPanel, 0, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(197, 153);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(28, 153);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(576, 597);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(915, 667);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // PrüfenLabel
             // 
             this.PrüfenLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.PrüfenLabel.Font = new System.Drawing.Font("Britannic Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PrüfenLabel.Location = new System.Drawing.Point(147, 205);
+            this.PrüfenLabel.Location = new System.Drawing.Point(231, 145);
             this.PrüfenLabel.Name = "PrüfenLabel";
-            this.PrüfenLabel.Size = new System.Drawing.Size(282, 100);
+            this.PrüfenLabel.Size = new System.Drawing.Size(451, 100);
             this.PrüfenLabel.TabIndex = 10;
             this.PrüfenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -150,34 +149,21 @@
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
             this.label4.Font = new System.Drawing.Font("Britannic Bold", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label4.Location = new System.Drawing.Point(3, 305);
+            this.label4.Location = new System.Drawing.Point(3, 245);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(570, 71);
+            this.label4.Size = new System.Drawing.Size(909, 71);
             this.label4.TabIndex = 5;
             this.label4.Text = "vorhandene übertragen";
             this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // AutomaticON
-            // 
-            this.AutomaticON.Checked = true;
-            this.AutomaticON.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AutomaticON.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AutomaticON.Font = new System.Drawing.Font("Britannic Bold", 12F);
-            this.AutomaticON.Location = new System.Drawing.Point(147, 3);
-            this.AutomaticON.Name = "AutomaticON";
-            this.AutomaticON.Size = new System.Drawing.Size(282, 54);
-            this.AutomaticON.TabIndex = 8;
-            this.AutomaticON.Text = "neue Projekte automatisch auf den Calliope übertragen";
-            this.AutomaticON.UseVisualStyleBackColor = true;
             // 
             // CalliopeVerbundenLabel
             // 
             this.CalliopeVerbundenLabel.Controls.Add(this.calliopePicture);
             this.CalliopeVerbundenLabel.Controls.Add(this.CalliopeVerbundenLabel_);
             this.CalliopeVerbundenLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CalliopeVerbundenLabel.Location = new System.Drawing.Point(435, 63);
+            this.CalliopeVerbundenLabel.Location = new System.Drawing.Point(688, 3);
             this.CalliopeVerbundenLabel.Name = "CalliopeVerbundenLabel";
-            this.CalliopeVerbundenLabel.Size = new System.Drawing.Size(138, 139);
+            this.CalliopeVerbundenLabel.Size = new System.Drawing.Size(224, 139);
             this.CalliopeVerbundenLabel.TabIndex = 11;
             // 
             // CalliopeVerbundenLabel_
@@ -186,7 +172,7 @@
             this.CalliopeVerbundenLabel_.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.CalliopeVerbundenLabel_.Location = new System.Drawing.Point(0, 111);
             this.CalliopeVerbundenLabel_.Name = "CalliopeVerbundenLabel_";
-            this.CalliopeVerbundenLabel_.Size = new System.Drawing.Size(138, 28);
+            this.CalliopeVerbundenLabel_.Size = new System.Drawing.Size(224, 28);
             this.CalliopeVerbundenLabel_.TabIndex = 3;
             this.CalliopeVerbundenLabel_.Text = "Calliope nicht verbunden";
             this.CalliopeVerbundenLabel_.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -196,9 +182,9 @@
             this.panel1.Controls.Add(this.filePicture);
             this.panel1.Controls.Add(this.TransferDateiLabel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 63);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(138, 139);
+            this.panel1.Size = new System.Drawing.Size(222, 139);
             this.panel1.TabIndex = 12;
             // 
             // TransferDateiLabel
@@ -207,7 +193,7 @@
             this.TransferDateiLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.TransferDateiLabel.Location = new System.Drawing.Point(0, 111);
             this.TransferDateiLabel.Name = "TransferDateiLabel";
-            this.TransferDateiLabel.Size = new System.Drawing.Size(138, 28);
+            this.TransferDateiLabel.Size = new System.Drawing.Size(222, 28);
             this.TransferDateiLabel.TabIndex = 2;
             this.TransferDateiLabel.Text = "keine Übertragungsdatei";
             this.TransferDateiLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -222,16 +208,20 @@
             this.SettingsTablePanel.Controls.Add(this.label2, 0, 1);
             this.SettingsTablePanel.Controls.Add(this.label3, 0, 2);
             this.SettingsTablePanel.Controls.Add(this.downloadFolderTextbox, 1, 1);
-            this.SettingsTablePanel.Controls.Add(this.ÜbernehmenButton, 1, 3);
+            this.SettingsTablePanel.Controls.Add(this.ÜbernehmenButton, 1, 4);
             this.SettingsTablePanel.Controls.Add(this.calliopeDriveDropdown, 1, 2);
+            this.SettingsTablePanel.Controls.Add(this.AutomaticON, 1, 3);
+            this.SettingsTablePanel.Controls.Add(this.label6, 0, 3);
             this.SettingsTablePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsTablePanel.Location = new System.Drawing.Point(3, 3);
             this.SettingsTablePanel.Name = "SettingsTablePanel";
-            this.SettingsTablePanel.RowCount = 4;
+            this.SettingsTablePanel.RowCount = 6;
             this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SettingsTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.SettingsTablePanel.Size = new System.Drawing.Size(971, 853);
             this.SettingsTablePanel.TabIndex = 1;
             // 
@@ -278,7 +268,7 @@
             // 
             // ÜbernehmenButton
             // 
-            this.ÜbernehmenButton.Location = new System.Drawing.Point(153, 93);
+            this.ÜbernehmenButton.Location = new System.Drawing.Point(153, 133);
             this.ÜbernehmenButton.Name = "ÜbernehmenButton";
             this.ÜbernehmenButton.Size = new System.Drawing.Size(114, 48);
             this.ÜbernehmenButton.TabIndex = 5;
@@ -361,9 +351,9 @@
             this.transferPanel.Controls.Add(this.pictureBox1);
             this.transferPanel.Controls.Add(this.label5);
             this.transferPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.transferPanel.Location = new System.Drawing.Point(147, 63);
+            this.transferPanel.Location = new System.Drawing.Point(231, 3);
             this.transferPanel.Name = "transferPanel";
-            this.transferPanel.Size = new System.Drawing.Size(282, 139);
+            this.transferPanel.Size = new System.Drawing.Size(451, 139);
             this.transferPanel.TabIndex = 13;
             this.transferPanel.Visible = false;
             // 
@@ -373,7 +363,7 @@
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label5.Location = new System.Drawing.Point(0, 80);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(282, 59);
+            this.label5.Size = new System.Drawing.Size(451, 59);
             this.label5.TabIndex = 3;
             this.label5.Text = "Projekt wird zum Calliope übertragen";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -384,7 +374,7 @@
             this.calliopePicture.Image = global::CalliopeAutoTransfer.Properties.Resources.Calliope;
             this.calliopePicture.Location = new System.Drawing.Point(0, 0);
             this.calliopePicture.Name = "calliopePicture";
-            this.calliopePicture.Size = new System.Drawing.Size(138, 111);
+            this.calliopePicture.Size = new System.Drawing.Size(224, 111);
             this.calliopePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.calliopePicture.TabIndex = 4;
             this.calliopePicture.TabStop = false;
@@ -395,7 +385,7 @@
             this.filePicture.Image = global::CalliopeAutoTransfer.Properties.Resources.Projekt_grau;
             this.filePicture.Location = new System.Drawing.Point(0, 0);
             this.filePicture.Name = "filePicture";
-            this.filePicture.Size = new System.Drawing.Size(138, 111);
+            this.filePicture.Size = new System.Drawing.Size(222, 111);
             this.filePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.filePicture.TabIndex = 5;
             this.filePicture.TabStop = false;
@@ -406,7 +396,7 @@
             this.pictureBox1.Image = global::CalliopeAutoTransfer.Properties.Resources.transfer;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(282, 80);
+            this.pictureBox1.Size = new System.Drawing.Size(451, 80);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
@@ -415,10 +405,32 @@
             // 
             this.tableLayoutPanel2.SetColumnSpan(this.filesPanel, 3);
             this.filesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.filesPanel.Location = new System.Drawing.Point(3, 379);
+            this.filesPanel.Location = new System.Drawing.Point(3, 319);
             this.filesPanel.Name = "filesPanel";
-            this.filesPanel.Size = new System.Drawing.Size(570, 215);
+            this.filesPanel.Size = new System.Drawing.Size(909, 345);
             this.filesPanel.TabIndex = 14;
+            // 
+            // AutomaticON
+            // 
+            this.AutomaticON.AutoSize = true;
+            this.AutomaticON.Checked = true;
+            this.AutomaticON.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.AutomaticON.Location = new System.Drawing.Point(153, 93);
+            this.AutomaticON.Name = "AutomaticON";
+            this.AutomaticON.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.AutomaticON.Size = new System.Drawing.Size(15, 24);
+            this.AutomaticON.TabIndex = 6;
+            this.AutomaticON.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Location = new System.Drawing.Point(3, 90);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(144, 40);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "neue Projekte automatisch auf den Calliope übertragen:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // MainForm
             // 
@@ -464,7 +476,6 @@
         private System.Windows.Forms.Label TransferDateiLabel;
         private System.Windows.Forms.Label CalliopeVerbundenLabel_;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox AutomaticON;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -478,6 +489,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FlowLayoutPanel filesPanel;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox AutomaticON;
+        private System.Windows.Forms.Label label6;
     }
 }
 
