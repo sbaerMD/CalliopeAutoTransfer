@@ -1,21 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
+using CalliopeAutoTransfer.externalSystems;
 
 namespace CalliopeAutoTransfer
 {
     static class Program
     {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
         [STAThread]
         static void Main()
         {
+            //WinForms-Stuff
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            //create
+            var form = new MainForm();
+            var view = (IView) form;
+            var logic = new Logic(new SettingsStore(), view);
+
+            //startup
+            logic.Start();
+            Application.Run(form);
         }
     }
 }

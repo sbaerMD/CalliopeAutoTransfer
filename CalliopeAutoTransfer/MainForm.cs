@@ -2,248 +2,167 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using CalliopeAutoTransfer.model;
 
 namespace CalliopeAutoTransfer
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IView
     {
-        private CalliopeConnection _calliopeConnection;
-        private FileSystem _fileSystem;
+        public event Action<Setting> ChangeSettings;
+        public event Action End;
 
         public MainForm()
         {
             InitializeComponent();
-            Task.Factory.StartNew(() =>
+        }
+
+        #region IView
+        public void ShowSettings(Setting setting)
+        {
+            doInUi(() =>
             {
-                init();
-                BeginInvoke(new Action(afterInit));
+                downloadFolderTextbox.Text = setting.DownloadFolder;
+                calliopeDriveDropdown.SelectedItem = setting.CalliopeDrive;
+                AutomaticON.Checked = setting.TransferNewFileAutomatic;
             });
         }
-
-
-        #region calliope handling
-        internal string CalliopeDrive
+        public void ShowCalliopeStatus(CalliopeStatus status)
         {
-            get => _calliopeConnection?.Drive;
-            set
+            doInUi(() =>
             {
-                if(_calliopeConnection?.Drive == value)
-                    return;
-                newCalliopeConnection(value);
-            }
-        }
+                switch (status)
+                {
+                    case CalliopeStatus.Connected:
+                        CalliopeVerbundenLabel_.Text = TextFor.Connected;
+                        calliopePicture.Image = Properties.Resources.Calliope;
+                        CalliopeVerbundenLabel.ForeColor = Color.Green;
+                        break;
+                    case CalliopeStatus.AwaitingRestart:
+                        CalliopeVerbundenLabel_.Text = TextFor.AwaitingRestart;
+                        calliopePicture.Image = Properties.Resources.Calliope;
+                        CalliopeVerbundenLabel.ForeColor = Color.DodgerBlue;
+                        break;
+                    case CalliopeStatus.Restarting:
+                        CalliopeVerbundenLabel_.Text = TextFor.Restarting;
+                        calliopePicture.Image = Properties.Resources.Calliope;
+                        CalliopeVerbundenLabel.ForeColor = Color.DodgerBlue;
+                        break;
+                    case CalliopeStatus.Restarted:
+                        CalliopeVerbundenLabel_.Text = TextFor.Restarted;
+                        calliopePicture.Image = Properties.Resources.Calliope;
+                        CalliopeVerbundenLabel.ForeColor = Color.Green;
+                        break;
 
-        private void newCalliopeConnection(string value)
+                    case CalliopeStatus.Disconnected:
+                    default:
+                        CalliopeVerbundenLabel_.Text = TextFor.Disconnected;
+                        calliopePicture.Image = Properties.Resources.Calliope_sepia;
+                        CalliopeVerbundenLabel.ForeColor = Color.DarkOrange;
+                        break;
+
+                }
+            });
+        }
+        public void ShowTransferIndicator()
         {
-            if (_calliopeConnection != null)
-            {
-                _calliopeConnection.Close();
-                _calliopeConnection.Connected -= CalliopeConnectionOnConnected;
-                _calliopeConnection.Disconnected -= CalliopeConnectionOnDisconnected; 
-            }
-
-            _calliopeConnection =
-                new CalliopeConnection(value, CalliopeConnectionOnConnected, CalliopeConnectionOnDisconnected);
+            doInUi(() => transferPanel.Show());
         }
-
-        private void CalliopeConnectionOnConnected()
+        public void HideTransferIndicator()
         {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action(CalliopeConnectionOnConnected));
-                return;
-            }
-            CalliopeVerbundenLabel_.Text = "verbunden";
-            calliopePicture.Image = Properties.Resources.Calliope;
-            CalliopeVerbundenLabel.ForeColor = Color.Green;
-
-            if (!String.IsNullOrEmpty(_transferDatei))
-            {
-                transferPanel.Hide();
-                PrüfenLabel.Text = $"Datei '{Path.GetFileName(_transferDatei)}' wurde auf Deinen Calliope übertragen!\nDu kannst den Calliope jetzt trennen.";
-                PrüfenLabel.BackColor = Color.LightGreen;
-                _transferDatei = String.Empty;
-            }
+            doInUi(() => transferPanel.Hide());
         }
-
-        private void CalliopeConnectionOnDisconnected()
+        public void ShowTransferInformation(string info)
         {
-            if (InvokeRequired)
+            doInUi(() =>
             {
-                BeginInvoke(new Action(CalliopeConnectionOnDisconnected));
-                return;
-            }
-            CalliopeVerbundenLabel_.Text = "nicht verbunden";
-            calliopePicture.Image = Properties.Resources.Calliope_sepia;
-            CalliopeVerbundenLabel.ForeColor = Color.DarkOrange;
-
-            PrüfenLabel.Text = String.Empty;
-            PrüfenLabel.BackColor = Color.Transparent;
+                PrüfenLabel.Text = info;
+                PrüfenLabel.BackColor = !String.IsNullOrEmpty(info) ? Color.LightGreen : Color.Transparent;
+            });
         }
-        #endregion
-
-        #region folder handling
-        internal string DownloadFolder
+        public void ShowFileStatus(string fileName)
         {
-            get => _fileSystem?.Folder;
-            set
+            doInUi(() =>
             {
-                if (_fileSystem?.Folder == value)
-                    return;
-                newFileSystemHandler(value);
-            }
+                if (String.IsNullOrEmpty(fileName))
+                {
+                    TransferDateiLabel.Text = TextFor.NoProjectFileText;
+                    filePicture.Image = Properties.Resources.Projekt_grau;
+                }
+                else
+                {
+                    TransferDateiLabel.Text = fileName;
+                    filePicture.Image = Properties.Resources.Projekt_gruen;
+                }
+            });
         }
-
-        private void newFileSystemHandler(string value)
+        public void ShowProjectFiles(IEnumerable<string> files, Action<string> clickCallback)
         {
-            if (_fileSystem != null)
+            doInUi(() =>
             {
-                _fileSystem.Close();
-                _fileSystem.NewFile -= FileSystemOnNewFile;
-                _fileSystem.NewFileList -= FileSystemOnNewFileList;
-            }
-            _fileSystem?.Close();
-            _fileSystem = new FileSystem(value, FileSystemOnNewFile, FileSystemOnNewFileList);
+                filesPanel.Controls.Clear();
+                foreach (var file in files)
+                    addButtonFor(file, clickCallback);
+            });
         }
-
-        private void FileSystemOnNewFile(string file)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action<string>(FileSystemOnNewFile), file);
-                return;
-            }
-
-            _transferDatei = file;
-            TransferDateiLabel.Text =  Path.GetFileName(_transferDatei);
-            filePicture.Image = Properties.Resources.Projekt_gruen;
-            transferPanel.Hide();
-            PrüfenLabel.Text = String.Empty;
-            PrüfenLabel.BackColor = Color.Transparent;
-        }
-
-        private void FileSystemOnNewFileList(IEnumerable<string> files)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action<IEnumerable<string>>(FileSystemOnNewFileList), files);
-                return;
-            }
-            filesPanel.Controls.Clear();
-            foreach (var file in files)
-            {
-                addButtonFor(file);
-            }
-        }
-
-        private void addButtonFor(string file)
+        private void addButtonFor(string file, Action<string> clickCallback)
         {
             var button = new Button
             {
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                Size = new Size(200,80),
+                Size = new Size(200, 80),
                 Text = Path.GetFileNameWithoutExtension(file),
-                Font =  new Font(Font.FontFamily, 12),
+                Font = new Font(Font.FontFamily, 12),
             };
-            button.Click += (sender, args) =>
-            {
-                _fileSystem?.ForExisitingFile(file, fullName =>
-                {
-                    if (!_calliopeConnection.Ready())
-                    {
-                        PrüfenLabel.Text =
-                            $"Deinen Calliope ist nicht verbunden. Die Datei kann nicht übertragen werden.";
-                        PrüfenLabel.BackColor = Color.OrangeRed;
-                        return;
-                    }
-
-                    _transferDatei = fullName;
-                    _calliopeConnection?.CopyFrom(fullName);
-                    ShowCopyStart();
-                });
-            };
+            button.Click += (sender, args) => clickCallback?.Invoke(file);
             toolTip1.SetToolTip(button, file);
             filesPanel.Controls.Add(button);
         }
-
+        public void ShowError(string message, string title)
+        {
+            doInUi(() => MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Stop));
+        }
+        public void EnsureVisible()
+        {
+            doInUi(() =>
+            {
+                TopMost = true;
+                if (WindowState == FormWindowState.Minimized)
+                    WindowState = FormWindowState.Maximized;
+                Show();
+                TopMost = false;
+            });
+        }
+        private void doInUi(Action action)
+        {
+            if (InvokeRequired)
+                BeginInvoke(action);
+            else
+                action();
+        }
         #endregion
 
-        private void init()
-        {
-            DownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "Downloads");
-            CalliopeDrive = @"E:\";
-        }
-
-        private void afterInit()
-        {
-            downloadFolderTextbox.Text = DownloadFolder;
-            calliopeDriveDropdown.SelectedItem = CalliopeDrive;
-            timer.Enabled = true;
-            CalliopeConnectionOnDisconnected();
-        }
-
+        #region UI handler
         private void ÜbernehmenButton_Click(object sender, EventArgs e)
         {
-            DownloadFolder = downloadFolderTextbox.Text;
-            CalliopeDrive = calliopeDriveDropdown.SelectedItem.ToString();
+            ChangeSettings?.Invoke(new Setting
+            {
+                DownloadFolder = downloadFolderTextbox.Text,
+                CalliopeDrive = calliopeDriveDropdown.SelectedItem.ToString()
+            });
         }
-
-        string _transferDatei = String.Empty;
-
-        private void timer_Tick(object sender, EventArgs e)
+        private void ChooseFolderButton_Click(object sender, EventArgs e)
         {
-            try
+            folderBrowserDialog.SelectedPath = downloadFolderTextbox.Text;
+            if (folderBrowserDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var übertragungsdateiNochVorhanden = File.Exists(_transferDatei);
-                if (übertragungsdateiNochVorhanden)
-                {
-                    TransferDateiLabel.Text = Path.GetFileName(_transferDatei);
-                    filePicture.Image = Properties.Resources.Projekt_gruen;
-                }
-                else
-                {
-                    TransferDateiLabel.Text = "keine (neue) Übertragungsdatei";
-                    filePicture.Image = Properties.Resources.Projekt_grau;
-                }
-
-                var angeschlossenUndBereit = _calliopeConnection?.Ready() ?? false;
-
-                if (übertragungsdateiNochVorhanden && angeschlossenUndBereit && AutomaticON.Checked)
-                {
-                    _calliopeConnection.CopyFrom(_transferDatei);
-                    ShowCopyStart();
-                    
-                    ShowMe();
-                }
-            }
-            catch (Exception exception)
-            {
-                PrüfenLabel.Text = exception.Message;
+                downloadFolderTextbox.Text = folderBrowserDialog.SelectedPath;
             }
         }
-
-        private void ShowMe()
-        {
-            TopMost = true;
-            if (WindowState == FormWindowState.Minimized)
-                WindowState = FormWindowState.Maximized;
-            Show();
-            TopMost = false;
-        }
-
-        private void ShowCopyStart()
-        {
-            transferPanel.Show();
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _calliopeConnection?.Close();
+            End?.Invoke();            
         }
+        #endregion
     }
 }
